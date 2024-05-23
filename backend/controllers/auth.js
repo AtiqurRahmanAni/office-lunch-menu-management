@@ -39,6 +39,16 @@ export const login = asyncHandler(async (req, res) => {
   return res.status(200).json(new LoginResponseDTO(user));
 });
 
+export const logout = asyncHandler(async (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    path: "/",
+  });
+  return res.status(200).json({ message: "Logout successful" });
+});
+
 export const signup = asyncHandler(async (req, res) => {
   const { email, displayName, password } = req.body;
 

@@ -4,7 +4,7 @@ import "dotenv/config";
 import cors from "cors";
 import express from "express";
 import authRouter from "./routes/auth.js";
-// import userRouter from "./routes/users.js";
+import userRouter from "./routes/users.js";
 import db from "./database/dbConfig.js";
 import errorHandler from "./middlewares/errorHandler.js";
 
@@ -28,7 +28,7 @@ app.get("/test", (req, res) => {
 });
 
 app.use("/auth", authRouter);
-// app.use("/users", userRouter);
+app.use("/users", userRouter);
 
 app.use(errorHandler);
 

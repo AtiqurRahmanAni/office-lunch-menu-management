@@ -4,20 +4,36 @@ import { useNavigate } from "react-router-dom";
 import { Form, Formik } from "formik";
 import { logInFormSchema } from "../utils/validationSchema";
 import toast from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
+import axiosInstance from "../utils/axiosInstance";
+import { useAuthContext } from "../context/AuthContextProvider";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { setUserInfo } = useAuthContext();
 
-  const onSubmit = (values) => {
-    console.log(values);
-  };
+  const mutation = useMutation({
+    mutationFn: (credentials) => {
+      return axiosInstance.post("/auth/login", credentials);
+    },
+    onSuccess: (response) => {
+      toast.success("Login successful");
+      setUserInfo(response.data);
+      navigate("/dashboard");
+    },
+    onError: (error) => {
+      toast.error(
+        error.response ? error.response.data.message : "Something went wrong"
+      );
+    },
+  });
 
   return (
     <div className="flex justify-center items-center h-screen">
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={logInFormSchema}
-        onSubmit={onSubmit}
+        onSubmit={(values) => mutation.mutate(values)}
       >
         <Form className="w-96 border border-gray-400 p-4 rounded-lg">
           <div>
@@ -31,12 +47,17 @@ const Login = () => {
           />
           <Input label="Password" type="password" fieldName="password" />
           <div className="mt-4 flex justify-center gap-x-2">
-            <Button className="btn-primary" type="submit">
+            <Button
+              className="btn-primary"
+              type="submit"
+              loading={mutation.isPending}
+            >
               Login
             </Button>
             <Button
               className="btn-secondary"
               onClick={() => navigate("/signup")}
+              disabled={mutation.isPending}
             >
               Sign Up
             </Button>

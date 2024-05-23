@@ -4,21 +4,26 @@ import SignUp from "./pages/SigUp";
 import PublicRoute from "./routes/PublicRoute";
 import PrivateRoute from "./routes/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
+import Navbar from "./components/Navbar";
 
 const App = () => {
   return (
-    <div className="font-roboto">
-      <Routes>
-        <Route element={<PrivateRoute />}>
-          <Route path="/" element={<Dashboard />} />
-        </Route>
+    <>
+      <Navbar />
+      <div className="font-roboto">
+        <Routes>
+          <Route element={<Navbar />} path="" />
+          <Route element={<PrivateRoute />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Route>
 
-        <Route element={<PublicRoute />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-        </Route>
-      </Routes>
-    </div>
+          <Route element={<PublicRoute />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+          </Route>
+        </Routes>
+      </div>
+    </>
   );
 };
 

@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { useNavigate } from "react-router-dom";
@@ -6,26 +5,24 @@ import { Form, Formik } from "formik";
 import { signUpFormSchema } from "../utils/validationSchema";
 import axiosInstance from "../utils/axiosInstance";
 import toast from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
 
 const SignUp = () => {
+  const mutation = useMutation({
+    mutationFn: (newUser) => {
+      return axiosInstance.post("/auth/signup", newUser);
+    },
+    onSuccess: (response) => {
+      toast.success(response.data.message);
+    },
+    onError: (error) => {
+      toast.error(
+        error.response ? error.response.data.message : "Something went wrong"
+      );
+    },
+  });
+
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const signUp = async (values) => {
-    try {
-      setLoading(true);
-      const response = await axiosInstance.post("/auth/signup", values);
-      const { data } = response;
-      toast.success(data.message);
-    } catch (err) {
-      if (err.response) {
-        toast.error(err.response.data.message);
-      } else {
-        toast.error("Something went wrong");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="flex justify-center items-center h-screen">
@@ -37,7 +34,7 @@ const SignUp = () => {
           confirmPassword: "",
         }}
         validationSchema={signUpFormSchema}
-        onSubmit={signUp}
+        onSubmit={(values) => mutation.mutate(values)}
       >
         <Form className="w-96 border border-gray-400 p-4 rounded-lg">
           <div>
@@ -68,11 +65,16 @@ const SignUp = () => {
             fieldName="confirmPassword"
           />
           <div className="mt-4 flex justify-center gap-x-2">
-            <Button className="btn-primary" type="submit" loading={loading}>
+            <Button
+              className="btn-primary"
+              type="submit"
+              loading={mutation.isPending}
+            >
               Sign Up
             </Button>
             <Button
               className="btn-secondary"
+              disabled={mutation.isPending}
               onClick={() => navigate("/login")}
             >
               Login
