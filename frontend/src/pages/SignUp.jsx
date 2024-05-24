@@ -1,4 +1,4 @@
-import Button from "../components/Button";
+import { Button } from "flowbite-react";
 import Input from "../components/Input";
 import { useNavigate } from "react-router-dom";
 import { Form, Formik } from "formik";
@@ -66,14 +66,15 @@ const SignUp = () => {
           />
           <div className="mt-4 flex justify-center gap-x-2">
             <Button
-              className="btn-primary"
+              color="blue"
               type="submit"
-              loading={mutation.isPending}
+              isProcessing={mutation.isPending}
+              disabled={mutation.isPending}
             >
               Sign Up
             </Button>
             <Button
-              className="btn-secondary"
+              color="gray"
               disabled={mutation.isPending}
               onClick={() => navigate("/login")}
             >

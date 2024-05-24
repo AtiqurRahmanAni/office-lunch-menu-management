@@ -1,29 +1,38 @@
-import { forwardRef } from "react";
 import { useField } from "formik";
+import { Label, TextInput, Textarea } from "flowbite-react";
 
 const Input = ({
   className,
-  type = "text",
   placeholder,
   fieldName,
   label,
+  type = "text",
   disabled = false,
+  textArea = false,
 }) => {
   const [field, meta, _] = useField({ name: fieldName });
   return (
     <div className={className || ""}>
-      <label htmlFor={fieldName} className="text-lg block">
-        {label}
-      </label>
-      <input
-        type={type}
-        id={fieldName}
-        name={fieldName}
-        placeholder={placeholder}
-        {...field}
-        disabled={disabled}
-        className="border border-gray-300 rounded-md w-full p-2"
-      />
+      <div className="mb-2 block">
+        <Label htmlFor={fieldName} value={label} />
+      </div>
+      {!textArea ? (
+        <TextInput
+          type={type}
+          id={fieldName}
+          placeholder={placeholder}
+          {...field}
+          disabled={disabled}
+        />
+      ) : (
+        <Textarea
+          type={type}
+          id={fieldName}
+          placeholder={placeholder}
+          {...field}
+          disabled={disabled}
+        />
+      )}
       {meta.error && meta.touched && (
         <span className="font-medium text-red-400">{meta.error}</span>
       )}

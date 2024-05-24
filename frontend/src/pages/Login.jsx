@@ -1,5 +1,5 @@
 import Input from "../components/Input";
-import Button from "../components/Button";
+import { Button } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import { Form, Formik } from "formik";
 import { logInFormSchema } from "../utils/validationSchema";
@@ -19,7 +19,11 @@ const Login = () => {
     onSuccess: (response) => {
       toast.success("Login successful");
       setUserInfo(response.data);
-      navigate("/dashboard");
+      if (response.data.role === "admin") {
+        navigate("/add-menu");
+      } else {
+        navigate("/dashboard");
+      }
     },
     onError: (error) => {
       toast.error(
@@ -48,14 +52,15 @@ const Login = () => {
           <Input label="Password" type="password" fieldName="password" />
           <div className="mt-4 flex justify-center gap-x-2">
             <Button
-              className="btn-primary"
+              color="blue"
               type="submit"
               loading={mutation.isPending}
+              disabled={mutation.isPaused}
             >
               Login
             </Button>
             <Button
-              className="btn-secondary"
+              color="gray"
               onClick={() => navigate("/signup")}
               disabled={mutation.isPending}
             >

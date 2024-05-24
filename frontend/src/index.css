@@ -22,4 +22,7 @@
   .btn-danger {
     @apply bg-red-500 hover:bg-red-400;
   }
+  .container {
+      @apply max-w-[77.5rem] mx-auto px-5 md:px-10 lg:px-16 xl:max-w-[87.5rem];
+    }
 }

@@ -30,3 +30,11 @@ export const logInFormSchema = yup.object().shape({
     .min(4, "Password must be 4 characters long")
     .required("Required"),
 });
+
+export const createItemFormSchema = yup.object().shape({
+  date: yup.string().required("Required"),
+  itemName: yup
+    .string()
+    .min(3, "Name must be at least 3 characters long")
+    .required("Required"),
+});

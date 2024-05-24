@@ -3,8 +3,9 @@ import cookieParser from "cookie-parser";
 import "dotenv/config";
 import cors from "cors";
 import express from "express";
-import authRouter from "./routes/auth.js";
-import userRouter from "./routes/users.js";
+import authRouter from "./routes/authRoute.js";
+import userRouter from "./routes/userRoute.js";
+import itemRouter from "./routes/itemRoute.js";
 import db from "./database/dbConfig.js";
 import errorHandler from "./middlewares/errorHandler.js";
 
@@ -29,6 +30,7 @@ app.get("/test", (req, res) => {
 
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
+app.use("/items", itemRouter);
 
 app.use(errorHandler);
 

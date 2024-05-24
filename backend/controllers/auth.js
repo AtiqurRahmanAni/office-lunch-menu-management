@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { NotFoundError, BadRequestError } from "../utils/errors.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { hashPassword, comparePassword } from "../utils/index.js";
-import User from "../database/models/users.js";
+import { User } from "../database/associations.js";
 import LoginResponseDTO from "../dtos/LoginResponseDTO.js";
 
 const lifetime = "3600000";

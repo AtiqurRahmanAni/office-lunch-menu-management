@@ -1,20 +1,19 @@
 import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
-import SignUp from "./pages/SigUp";
 import PublicRoute from "./routes/PublicRoute";
 import PrivateRoute from "./routes/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
-import Navbar from "./components/Navbar";
+import CustomNavbar from "./components/CustomNavbar";
 import AddMenu from "./pages/AddMenu";
 import ViewChoices from "./pages/ViewChoices";
+import SignUp from "./pages/SignUp";
 
 const App = () => {
   return (
     <>
-      <Navbar />
+      <CustomNavbar />
       <div className="font-roboto">
         <Routes>
-          <Route element={<Navbar />} path="" />
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/add-menu" element={<AddMenu />} />
