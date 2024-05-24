@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { createContext, useContext } from "react";
-import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "../utils/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -11,26 +10,27 @@ export const useAuthContext = () => useContext(AuthContext);
 
 export const AuthContextProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const { isLoading, data, error } = useQuery({
-    queryKey: ["userInfo"],
-    queryFn: () => axiosInstance.get("/users/whoami"),
-    staleTime: Infinity,
-    retry: 0,
-  });
-
   useEffect(() => {
-    if (data) {
-      setUserInfo(data.data);
-    } else if (error) {
-      if (error.response && error.response.status === 401) {
-        navigate("/login");
-      } else {
-        toast.error("Something went wrong");
+    const fetchInfo = async () => {
+      try {
+        const response = await axiosInstance.get("/users/whoami");
+        setUserInfo(response.data);
+      } catch (err) {
+        if (err.response && err.response.status === 401) {
+          setUserInfo(null);
+          navigate("/login");
+        } else {
+          toast.error("Something went wrong");
+        }
+      } finally {
+        setLoading(false);
       }
-    }
-  }, [data, error]);
+    };
+    fetchInfo();
+  }, []);
 
   const logout = async () => {
     try {
@@ -42,7 +42,7 @@ export const AuthContextProvider = ({ children }) => {
       if (err.response.status === 401) {
         toast.error("Token expired");
         setUserInfo(null);
-        navigate("/login");
+        // navigate("/login");
       }
       toast.error(
         err.response ? err.response.data.message : "Something went wrong"
@@ -58,7 +58,7 @@ export const AuthContextProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={value}>
-      {!isLoading ? children : null}
+      {!loading ? children : null}
     </AuthContext.Provider>
   );
 };

@@ -56,7 +56,7 @@ const Navbar = () => {
                 { title: "Login", href: "/login" },
                 { title: "Sign Up", href: "/signup" },
               ].map((item, idx) => (
-                <li>
+                <li key={idx}>
                   <Link
                     to={item.href}
                     className={`block py-2 px-3 text-white rounded md:bg-transparent  md:p-0 ${

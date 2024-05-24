@@ -1,11 +1,8 @@
 import jwt from "jsonwebtoken";
-import {
-  BadRequestError,
-  InternalServerError,
-  NotFoundError,
-} from "../utils/errors.js";
+import { BadRequestError, NotFoundError } from "../utils/errors.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import User from "../database/models/users.js";
+import { hashPassword } from "../utils/index.js";
 
 // export const getAllUsers = asyncHandler(async (req, res) => {
 //   try {
@@ -15,6 +12,25 @@ import User from "../database/models/users.js";
 //     throw new InternalServerError("Error fetching users");
 //   }
 // });
+
+export const createAdmin = asyncHandler(async (req, res) => {
+  const { email, displayName, password } = req.body;
+  const otherUser = await User.findOne({ where: { email } });
+  if (otherUser) {
+    throw new BadRequestError("Email already in use");
+  }
+
+  const hashedPassword = await hashPassword(password);
+  const newAdminUser = User.build({
+    email,
+    displayName,
+    password: hashedPassword,
+    role: "admin",
+  });
+  await newAdminUser.save();
+
+  return res.status(201).json({ message: "Signup successful" });
+});
 
 export const whoAmI = asyncHandler(async (req, res) => {
   const { token } = req.cookies;

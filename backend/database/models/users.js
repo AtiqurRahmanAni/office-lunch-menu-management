@@ -33,14 +33,13 @@ const User = sequelize.define(
     },
   },
   {
-    tableName: "users", // Specify the table name (optional)
-    timestamps: false, // Disable default createdAt and updatedAt columns (optional)
+    tableName: "users",
   }
 );
 
 // Sync the model with the database (create the table if it doesn't exist)
 sequelize
-  .sync()
+  .sync({ alter: true })
   .then(() => {
     console.log("Users table synced with the database");
   })
