@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContextProvider";
 import Button from "./Button";
 
 const Navbar = () => {
-  const location = useLocation();
   const { userInfo, logout } = useAuthContext();
   const [loading, setLoading] = useState(false);
 
@@ -57,22 +56,45 @@ const Navbar = () => {
                 { title: "Sign Up", href: "/signup" },
               ].map((item, idx) => (
                 <li key={idx}>
-                  <Link
+                  <NavLink
                     to={item.href}
-                    className={`block py-2 px-3 text-white rounded md:bg-transparent  md:p-0 ${
-                      location.pathname === item.href
-                        ? "md:text-blue-700"
-                        : "md:text-gray-700"
-                    }`}
+                    className={({ isActive }) =>
+                      `block py-2 px-3 text-white rounded md:bg-transparent md:p-0 ${
+                        isActive ? "md:text-blue-700" : "md:text-gray-700"
+                      }`
+                    }
                     aria-current="page"
                   >
                     {item.title}
-                  </Link>
+                  </NavLink>
                 </li>
               ))
             ) : (
-              <div>
-                <span className="mr-3">Hi, {userInfo.displayName}</span>
+              <div className="flex items-center">
+                <span className="mr-3 font-semibold text-blue-800">
+                  Hi, {userInfo.displayName}
+                </span>
+                {userInfo.role === "admin" && (
+                  <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white mr-4">
+                    {[
+                      { title: "View Choices", href: "/view-choices" },
+                      { title: "Add Menu", href: "/add-menu" },
+                    ].map((item, idx) => (
+                      <li key={idx}>
+                        <NavLink
+                          to={item.href}
+                          className={({ isActive }) =>
+                            `block py-2 px-3 text-white rounded md:bg-transparent md:p-0 ${
+                              isActive ? "md:text-blue-700" : "md:text-gray-700"
+                            }`
+                          }
+                        >
+                          {item.title}
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                )}
                 <Button
                   className="btn-danger"
                   onClick={() => onClick()}

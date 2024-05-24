@@ -5,6 +5,8 @@ import PublicRoute from "./routes/PublicRoute";
 import PrivateRoute from "./routes/PrivateRoute";
 import Dashboard from "./pages/Dashboard";
 import Navbar from "./components/Navbar";
+import AddMenu from "./pages/AddMenu";
+import ViewChoices from "./pages/ViewChoices";
 
 const App = () => {
   return (
@@ -15,6 +17,8 @@ const App = () => {
           <Route element={<Navbar />} path="" />
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/add-menu" element={<AddMenu />} />
+            <Route path="/view-choices" element={<ViewChoices />} />
           </Route>
 
           <Route element={<PublicRoute />}>
