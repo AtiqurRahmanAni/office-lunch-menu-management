@@ -2,6 +2,8 @@ import { NavLink } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContextProvider";
 import { Avatar, Dropdown } from "flowbite-react";
 import { Navbar } from "flowbite-react";
+import spoons from "../assets/spoons.png";
+import avatar from "../assets/avatar.png";
 
 const CustomNavbar = () => {
   const { userInfo, logout } = useAuthContext();
@@ -10,11 +12,7 @@ const CustomNavbar = () => {
     <div className="fixed top-0 left-0 w-full z-10">
       <Navbar fluid rounded className="container">
         <Navbar.Brand>
-          <img
-            src="/src/assets/spoons.png"
-            className="mr-3 h-6 sm:h-9"
-            alt="Spoons"
-          />
+          <img src={spoons} className="mr-3 h-6 sm:h-9" alt="Spoons" />
           <span className="self-center whitespace-nowrap text-xl font-semibold">
             Lunch Management
           </span>
@@ -67,13 +65,7 @@ const CustomNavbar = () => {
                 <Dropdown
                   arrowIcon={false}
                   inline
-                  label={
-                    <Avatar
-                      alt="User avatar"
-                      img="/src/assets/avatar.png"
-                      rounded
-                    />
-                  }
+                  label={<Avatar alt="User avatar" img={avatar} rounded />}
                 >
                   <Dropdown.Header>
                     <span className="block text-sm">

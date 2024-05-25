@@ -9,3 +9,14 @@ services:
       - ./backend/.env.docker
     ports:
       - "3000:3000"
+
+  frontend:
+    container_name: frontend_container
+    depends_on:
+      - backend
+    build:
+      context: ./frontend
+    env_file:
+      - ./frontend/.env
+    ports:
+      - "5173:5173"
