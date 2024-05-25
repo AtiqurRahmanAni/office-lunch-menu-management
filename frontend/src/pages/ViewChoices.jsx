@@ -1,31 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
-import React, { useEffect } from "react";
-import axiosInstance from "../utils/axiosInstance";
 import { Accordion, List, Spinner } from "flowbite-react";
-import { useAuthContext } from "../context/AuthContextProvider";
-import toast from "react-hot-toast";
+import useFetchData from "../hooks/useFetchData";
 
 const ViewChoices = () => {
-  const { setUserInfo } = useAuthContext();
-
-  const {
-    isLoading,
-    error,
-    data: userSelections,
-  } = useQuery({
-    queryKey: ["userSelections"],
-    queryFn: () => axiosInstance.get("/items/selections"),
-  });
-
-  useEffect(() => {
-    if (error) {
-      if (error.response && error.response.status === 401) {
-        setUserInfo(null);
-      } else {
-        toast.error("Something went wrong");
-      }
-    }
-  }, [error, setUserInfo]);
+  const { isLoading, data: userSelections } = useFetchData(
+    ["userSelections"],
+    "/items/selections"
+  );
 
   return (
     <div className="container max-h-screen overflow-auto">

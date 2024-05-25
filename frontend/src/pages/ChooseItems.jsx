@@ -1,29 +1,17 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import React, { useState } from "react";
 import axiosInstance from "../utils/axiosInstance";
 import { Button, Checkbox, Spinner, Table } from "flowbite-react";
 import toast from "react-hot-toast";
 import { useAuthContext } from "../context/AuthContextProvider";
+import useFetchData from "../hooks/useFetchData";
 
 const ChooseItems = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const queryClient = useQueryClient();
   const { setUserInfo } = useAuthContext();
 
-  const { isLoading, data, error } = useQuery({
-    queryKey: ["itemsToday"],
-    queryFn: () => axiosInstance.get("/items/today"),
-  });
-
-  useEffect(() => {
-    if (error) {
-      if (error.response && error.response.status === 401) {
-        setUserInfo(null);
-      } else {
-        toast.error("Something went wrong");
-      }
-    }
-  }, [error, setUserInfo]);
+  const { isLoading, data } = useFetchData(["itemsToday"], "/items/today");
 
   const mutation = useMutation({
     mutationFn: () => {

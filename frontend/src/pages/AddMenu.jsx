@@ -1,36 +1,20 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Formik, Form } from "formik";
 import { Button, Table, Spinner } from "flowbite-react";
 import { Datepicker, Label } from "flowbite-react";
 import Input from "../components/Input";
-import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import axiosInstance from "../utils/axiosInstance";
 import { createItemFormSchema } from "../utils/validationSchema";
 import { useAuthContext } from "../context/AuthContextProvider";
+import useFetchData from "../hooks/useFetchData";
 
 const AddMenu = () => {
   const queryClient = useQueryClient();
   const { setUserInfo } = useAuthContext();
 
-  const {
-    isLoading,
-    data: menuItems,
-    error,
-  } = useQuery({
-    queryKey: ["menuItems"],
-    queryFn: () => axiosInstance.get("/items"),
-  });
-
-  useEffect(() => {
-    if (error) {
-      if (error.response && error.response.status === 401) {
-        setUserInfo(null);
-      } else {
-        toast.error("Something went wrong");
-      }
-    }
-  }, [error, setUserInfo]);
+  const { isLoading, data: menuItems } = useFetchData(["menuItems"], "/items");
 
   const mutation = useMutation({
     mutationFn: (values) => {
