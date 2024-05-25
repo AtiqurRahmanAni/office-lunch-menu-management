@@ -1,4 +1,4 @@
-import { Sequelize } from "@sequelize/core";
+import { Sequelize } from "sequelize";
 
 const config = {
   HOST: "localhost",
@@ -14,21 +14,9 @@ const config = {
   },
 };
 
-const sequelize = new Sequelize({
-  dialect: config.dialect,
-  database: config.DB,
-  user: config.USER,
-  password: config.PASSWORD,
+const sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
   host: config.HOST,
-  port: 5432,
-  logging: false,
-  query: { raw: true },
-  pool: {
-    max: config.pool.max,
-    min: config.pool.min,
-    acquire: config.pool.acquire,
-    idle: config.pool.idle,
-  },
+  dialect: config.dialect,
 });
 
 export default sequelize;

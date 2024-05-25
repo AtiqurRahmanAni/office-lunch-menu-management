@@ -1,5 +1,5 @@
 import sequelize from "../dbConnect.js";
-import { DataTypes } from "@sequelize/core";
+import { DataTypes } from "sequelize";
 
 const Item = sequelize.define("items", {
   itemName: {
@@ -11,15 +11,5 @@ const Item = sequelize.define("items", {
     allowNull: true,
   },
 });
-
-// Sync the model with the database (create the table if it doesn't exist)
-// sequelize
-//   .sync({ alter: true })
-//   .then(() => {
-//     console.log("Items table synced with the database");
-//   })
-//   .catch((error) => {
-//     console.error("Error syncing Items table:", error);
-//   });
 
 export default Item;

@@ -47,6 +47,7 @@ const CustomNavbar = () => {
               {userInfo.role === "admin" && (
                 <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white mr-4">
                   {[
+                    { title: "Choose", href: "/choose-items" },
                     { title: "Add Menu", href: "/add-menu" },
                     { title: "View Choices", href: "/view-choices" },
                   ].map((item, idx) => (

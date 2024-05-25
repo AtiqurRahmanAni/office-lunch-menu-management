@@ -1,5 +1,5 @@
 import sequelize from "../dbConnect.js";
-import { DataTypes } from "@sequelize/core";
+import { DataTypes } from "sequelize";
 
 const ItemDate = sequelize.define("itemDates", {
   date: {

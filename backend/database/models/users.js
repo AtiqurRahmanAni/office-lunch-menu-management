@@ -1,5 +1,5 @@
 import sequelize from "../dbConnect.js";
-import { DataTypes, Model } from "@sequelize/core";
+import { DataTypes } from "sequelize";
 
 const User = sequelize.define("users", {
   email: {
@@ -25,15 +25,5 @@ const User = sequelize.define("users", {
     defaultValue: "employee",
   },
 });
-
-// Sync the model with the database (create the table if it doesn't exist)
-// sequelize
-//   .sync({ alter: true })
-//   .then(() => {
-//     console.log("Users table synced with the database");
-//   })
-//   .catch((error) => {
-//     console.error("Error syncing Users table:", error);
-//   });
 
 export default User;

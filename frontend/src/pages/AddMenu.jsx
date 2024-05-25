@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik, Form } from "formik";
 import { Button, Table, Spinner } from "flowbite-react";
 import { Datepicker, Label } from "flowbite-react";
@@ -7,14 +7,30 @@ import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import axiosInstance from "../utils/axiosInstance";
 import { createItemFormSchema } from "../utils/validationSchema";
+import { useAuthContext } from "../context/AuthContextProvider";
 
 const AddMenu = () => {
   const queryClient = useQueryClient();
+  const { setUserInfo } = useAuthContext();
 
-  const { isLoading, data: menuItems } = useQuery({
+  const {
+    isLoading,
+    data: menuItems,
+    error,
+  } = useQuery({
     queryKey: ["menuItems"],
     queryFn: () => axiosInstance.get("/items"),
   });
+
+  useEffect(() => {
+    if (error) {
+      if (error.response && error.response.status === 401) {
+        setUserInfo(null);
+      } else {
+        toast.error("Something went wrong");
+      }
+    }
+  }, [error, setUserInfo]);
 
   const mutation = useMutation({
     mutationFn: (values) => {
@@ -28,6 +44,9 @@ const AddMenu = () => {
       toast.error(
         error.response ? error.response.data.message : "Something went wrong"
       );
+      if (error?.response?.status === 401) {
+        setUserInfo(null);
+      }
     },
   });
 
@@ -111,13 +130,13 @@ const AddMenu = () => {
       ) : (
         <div className="table-container w-full">
           {menuItems && (
-            <Table>
+            <Table hoverable>
               <Table.Head>
                 <Table.HeadCell>Date</Table.HeadCell>
                 <Table.HeadCell>Item Name</Table.HeadCell>
                 <Table.HeadCell>Description</Table.HeadCell>
               </Table.Head>
-              <Table.Body className="divide-dashed divide-y">
+              <Table.Body className="divide-dashed divide-y divide-zinc-400">
                 {menuItems?.data?.map(
                   (itemGroup, idx) =>
                     itemGroup.items.length > 0 && (

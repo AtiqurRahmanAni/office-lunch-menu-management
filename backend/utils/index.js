@@ -12,10 +12,7 @@ export const comparePassword = async (password, hashedPassword) => {
   return await bcrypt.compare(password, hashedPassword);
 };
 
-export const formatDate = (dateString) => {
-  const [day, month, year] = dateString.split("/");
-
-  const formattedDate = `${year}-${month}-${day}`;
-
-  return formattedDate;
+export const getToday = () => {
+  const today = new Date();
+  return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
 };

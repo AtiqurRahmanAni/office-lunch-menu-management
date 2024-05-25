@@ -22,7 +22,7 @@ const Login = () => {
       if (response.data.role === "admin") {
         navigate("/add-menu");
       } else {
-        navigate("/dashboard");
+        navigate("/choose-items");
       }
     },
     onError: (error) => {
@@ -54,7 +54,7 @@ const Login = () => {
             <Button
               color="blue"
               type="submit"
-              loading={mutation.isPending}
+              isProcessing={mutation.isPending}
               disabled={mutation.isPaused}
             >
               Login

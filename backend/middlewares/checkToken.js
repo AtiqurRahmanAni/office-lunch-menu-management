@@ -10,7 +10,9 @@ const checkToken = (req, res, next) => {
   jwt.verify(token, process.env.JWT_SECRET, {}, (err, user) => {
     if (err) {
       res.clearCookie("token", {
-        domain: process.env.ALLOWED_ORIGIN,
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
         path: "/",
       });
       return res.status(401).json({ status: "fail", message: "Invalid token" });

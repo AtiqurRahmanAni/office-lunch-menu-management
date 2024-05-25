@@ -40,9 +40,7 @@ export const AuthContextProvider = ({ children }) => {
       navigate("/login");
     } catch (err) {
       if (err.response.status === 401) {
-        toast.error("Token expired");
         setUserInfo(null);
-        // navigate("/login");
       }
       toast.error(
         err.response ? err.response.data.message : "Something went wrong"
