@@ -1,23 +1,20 @@
-import React, { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContextProvider";
-import { Button } from "flowbite-react";
+import { Avatar, Dropdown } from "flowbite-react";
 import { Navbar } from "flowbite-react";
 
 const CustomNavbar = () => {
   const { userInfo, logout } = useAuthContext();
-  const [loading, setLoading] = useState(false);
-
-  const onClick = async () => {
-    setLoading(true);
-    await logout();
-    setLoading(false);
-  };
 
   return (
     <div className="fixed top-0 left-0 w-full z-10">
       <Navbar fluid rounded className="container">
         <Navbar.Brand>
+          <img
+            src="/src/assets/spoons.png"
+            className="mr-3 h-6 sm:h-9"
+            alt="Spoons"
+          />
           <span className="self-center whitespace-nowrap text-xl font-semibold">
             Lunch Management
           </span>
@@ -66,13 +63,29 @@ const CustomNavbar = () => {
                   ))}
                 </ul>
               )}
-              <Button
-                color="red"
-                onClick={() => onClick()}
-                isProcessing={loading}
-              >
-                Logout
-              </Button>
+              <div>
+                <Dropdown
+                  arrowIcon={false}
+                  inline
+                  label={
+                    <Avatar
+                      alt="User avatar"
+                      img="/src/assets/avatar.png"
+                      rounded
+                    />
+                  }
+                >
+                  <Dropdown.Header>
+                    <span className="block text-sm">
+                      {userInfo.displayName}
+                    </span>
+                    <span className="block truncate text-sm font-medium">
+                      {userInfo.email}
+                    </span>
+                  </Dropdown.Header>
+                  <Dropdown.Item onClick={() => logout()}>Logout</Dropdown.Item>
+                </Dropdown>
+              </div>
             </div>
           )}
         </Navbar.Collapse>
