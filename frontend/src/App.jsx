@@ -12,20 +12,18 @@ const App = () => {
   return (
     <>
       <CustomNavbar />
-      <div className="font-roboto">
-        <Routes>
-          <Route element={<PrivateRoute />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/add-menu" element={<AddMenu />} />
-            <Route path="/view-choices" element={<ViewChoices />} />
-          </Route>
+      <Routes>
+        <Route element={<PrivateRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/add-menu" element={<AddMenu />} />
+          <Route path="/view-choices" element={<ViewChoices />} />
+        </Route>
 
-          <Route element={<PublicRoute />}>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
-          </Route>
-        </Routes>
-      </div>
+        <Route element={<PublicRoute />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Route>
+      </Routes>
     </>
   );
 };

@@ -33,7 +33,7 @@ const AddMenu = () => {
   });
 
   return (
-    <div className="pt-24 flex justify-center items-center container gap-x-10">
+    <div className="flex justify-center items-center container gap-x-10 h-screen">
       <div>
         <div>
           <h2 className="text-center mb-6 font-semibold text-lg text-gray-700">
@@ -52,7 +52,7 @@ const AddMenu = () => {
           }
         >
           {(props) => (
-            <Form className="w-96">
+            <Form className="min-w-96">
               <div>
                 <div className="mb-2 block">
                   <Label
@@ -105,15 +105,15 @@ const AddMenu = () => {
           />
         </div>
       ) : (
-        <div className="flex-1 self-start overflow-auto max-h-[800px]">
+        <div className="table-container w-full">
           {menuItems && (
-            <Table striped>
+            <Table>
               <Table.Head>
                 <Table.HeadCell>Date</Table.HeadCell>
                 <Table.HeadCell>Item Name</Table.HeadCell>
                 <Table.HeadCell>Description</Table.HeadCell>
               </Table.Head>
-              <Table.Body className="divide-y divide-x">
+              <Table.Body className="divide-dashed divide-y">
                 {menuItems?.data?.map(
                   (itemGroup, idx) =>
                     itemGroup.items.length > 0 && (
