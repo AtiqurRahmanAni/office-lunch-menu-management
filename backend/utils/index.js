@@ -11,3 +11,11 @@ export const hashPassword = async (password) => {
 export const comparePassword = async (password, hashedPassword) => {
   return await bcrypt.compare(password, hashedPassword);
 };
+
+export const formatDate = (dateString) => {
+  const [day, month, year] = dateString.split("/");
+
+  const formattedDate = `${year}-${month}-${day}`;
+
+  return formattedDate;
+};

@@ -1,8 +1,9 @@
 import asyncHandler from "../utils/asyncHandler.js";
 import sequelize from "../database/dbConnect.js";
-import { Item, ItemDate } from "../database/associations.js";
+import { ChoseItem, Item, ItemDate } from "../database/associations.js";
 import jwt from "jsonwebtoken";
 import { InternalServerError } from "../utils/errors.js";
+import { formatDate } from "../utils/index.js";
 
 export const getAllItems = asyncHandler(async (req, res) => {
   try {
@@ -45,10 +46,43 @@ export const getAllItems = asyncHandler(async (req, res) => {
   }
 });
 
+export const getTodaysOptions = asyncHandler(async (req, res) => {
+  try {
+    const today = new Date();
+    const formattedDate = `${today.getFullYear()}-${
+      today.getMonth() + 1
+    }-${today.getDate()}`;
+    const items = await Item.findAll({
+      include: [
+        {
+          model: ItemDate,
+          as: "itemDates",
+          attributes: ["date"],
+          where: { date: formattedDate },
+        },
+      ],
+      attributes: ["id", "itemName", "description"],
+      raw: true,
+    });
+
+    const choseItems = await ChoseItem.findAll({ attributes: ["itemId"] });
+    const choseItemIds = choseItems.map((item) => item.itemId);
+
+    return res.status(200).json({ items, choseItemIds });
+  } catch (err) {
+    console.log(`Error fetching today's options: ${err}`);
+    throw new InternalServerError(
+      "Something went wrong fetching today's options"
+    );
+  }
+});
+
 export const createItem = asyncHandler(async (req, res) => {
   const { itemName, description, date } = req.body;
   const { token } = req.cookies;
   const user = jwt.verify(token, process.env.JWT_SECRET);
+
+  console.log(description);
 
   try {
     const result = await sequelize.transaction(async (t) => {
@@ -72,5 +106,26 @@ export const createItem = asyncHandler(async (req, res) => {
   } catch (err) {
     console.log(`Error creating item: ${err}`);
     throw new InternalServerError("Can not create item");
+  }
+});
+
+export const chooseItem = asyncHandler(async (req, res) => {
+  const { itemIds } = req.body;
+  const { token } = req.cookies;
+  const user = jwt.verify(token, process.env.JWT_SECRET);
+
+  const itemUserEntries = itemIds.map((itemId) => ({
+    itemId,
+    userId: user.id,
+  }));
+
+  try {
+    ChoseItem.bulkCreate(itemUserEntries);
+    return res
+      .status(200)
+      .json({ message: "Items has been added to your lunch option" });
+  } catch (err) {
+    console.log(`Error choosing items: ${err}`);
+    throw new InternalServerError("Can not choose items");
   }
 });

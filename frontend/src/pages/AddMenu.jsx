@@ -3,7 +3,6 @@ import { Formik, Form } from "formik";
 import { Button, Table, Spinner } from "flowbite-react";
 import { Datepicker, Label } from "flowbite-react";
 import Input from "../components/Input";
-import { formatDate } from "../utils";
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import axiosInstance from "../utils/axiosInstance";
@@ -32,6 +31,8 @@ const AddMenu = () => {
     },
   });
 
+  const today = new Date();
+
   return (
     <div className="flex justify-center items-center container gap-x-10 h-screen">
       <div>
@@ -42,14 +43,14 @@ const AddMenu = () => {
         </div>
         <Formik
           initialValues={{
-            date: new Date().toLocaleDateString(),
+            date: `${today.getFullYear()}-${
+              today.getMonth() + 1
+            }-${today.getDate()}`,
             itemName: "",
             description: "",
           }}
           validationSchema={createItemFormSchema}
-          onSubmit={(values) =>
-            mutation.mutate({ ...values, date: formatDate(values.date) })
-          }
+          onSubmit={(values) => mutation.mutate(values)}
         >
           {(props) => (
             <Form className="min-w-96">
@@ -65,7 +66,10 @@ const AddMenu = () => {
                   language="en-US"
                   minDate={new Date()}
                   onSelectedDateChanged={(e) =>
-                    props.setFieldValue("date", e.toLocaleDateString())
+                    props.setFieldValue(
+                      "date",
+                      `${e.getFullYear()}-${e.getMonth() + 1}-${e.getDate()}`
+                    )
                   }
                 />
               </div>
@@ -78,7 +82,7 @@ const AddMenu = () => {
                 <Input
                   label="Description"
                   className="mb-2"
-                  fieldName="itemDescription"
+                  fieldName="description"
                   textArea={true}
                 />
               </div>
