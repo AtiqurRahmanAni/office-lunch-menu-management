@@ -5,24 +5,28 @@ import { Button, Checkbox, Spinner, Table } from "flowbite-react";
 import toast from "react-hot-toast";
 import { useAuthContext } from "../context/AuthContextProvider";
 import useFetchData from "../hooks/useFetchData";
+import SelectionConfirmationModal from "../components/SelectionConfirmationModal";
 
 const ChooseItems = () => {
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedItemsIds, setSelectedItemsIds] = useState([]);
   const queryClient = useQueryClient();
   const { setUserInfo } = useAuthContext();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { isLoading, data } = useFetchData(["itemsToday"], "/items/today");
 
   const mutation = useMutation({
     mutationFn: () => {
-      return axiosInstance.post("/items/choose", { itemIds: selectedItems });
+      return axiosInstance.post("/items/choose", { itemIds: selectedItemsIds });
     },
     onSuccess: (response) => {
       toast.success(response.data.message);
       queryClient.invalidateQueries({ queryKey: ["itemsToday"] });
-      setSelectedItems([]);
+      setSelectedItemsIds([]);
+      setIsModalOpen(false);
     },
     onError: (error) => {
+      console.error(error);
       toast.error(
         error.response ? error.response.data.message : "Something went wrong"
       );
@@ -33,7 +37,7 @@ const ChooseItems = () => {
   });
 
   const onSelectItem = (itemId) => {
-    setSelectedItems((prevSelectedItems) => {
+    setSelectedItemsIds((prevSelectedItems) => {
       if (prevSelectedItems.includes(itemId)) {
         return prevSelectedItems.filter((id) => id !== itemId);
       } else {
@@ -74,7 +78,7 @@ const ChooseItems = () => {
                     <Checkbox
                       id={item.id}
                       checked={
-                        selectedItems.includes(item.id) ||
+                        selectedItemsIds.includes(item.id) ||
                         data.data?.choseItemIds.includes(item.id)
                       }
                       onChange={() => onSelectItem(item.id)}
@@ -88,15 +92,23 @@ const ChooseItems = () => {
           <div className="mt-4">
             <Button
               color="blue"
-              onClick={() => mutation.mutate()}
-              isProcessing={mutation.isPending}
-              disabled={mutation.isPending || selectedItems.length === 0}
+              onClick={() => setIsModalOpen(true)}
+              disabled={mutation.isPending || selectedItemsIds.length === 0}
             >
               Add
             </Button>
           </div>
         </div>
       )}
+      <SelectionConfirmationModal
+        openModal={isModalOpen}
+        setOpenModal={setIsModalOpen}
+        items={selectedItemsIds.map(
+          (id) => data.data?.items?.find((item) => item.id === id).itemName
+        )}
+        onConfirm={() => mutation.mutate()}
+        loading={mutation.isPending}
+      />
     </div>
   );
 };
