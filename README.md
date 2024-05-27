@@ -14,4 +14,4 @@ First, go to the `frontend` folder. Then similar to the backend, you need to ope
 
 ## How to run frontend and backend inside docker container
 If you do not want to take on those hustles, you can use Docker to run this application. You need to set environment variables inside the `frontend` and `backend` folders. Now the name of the `.env` variable inside the `backend` folder will be `.env.docker`. If you use Windows OS and PostgreSQL is on your Windows machine, set the variable `DB_HOST` to `host.docker.internal`. Otherwise, the database will fail to establish a connection with the backend Docker container. The rest of the variables are the same as before. Now come to the root directory where the `docker-compose.yml` file is located. Just run `docker compose up -d --build` and you are good to go. To remove containers run `docker compose down`.
-**If you set the PORT of the backend other than 3000, go to the `docker-compose.yml` and change line no 11 to your-selected-port:your-selected-port**.
+**If you set the PORT of the backend other than 3000, go to the `docker-compose.yml` and change line no. 11 to `<your-selected-port>:<your-selected-port>`**.
