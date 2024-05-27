@@ -18,6 +18,11 @@ export const AuthContextProvider = ({ children }) => {
       try {
         const response = await axiosInstance.get("/users/whoami");
         setUserInfo(response.data);
+        if (response.data.role === "admin") {
+          navigate("/add-menu");
+        } else {
+          navigate("/choose-items");
+        }
       } catch (err) {
         if (err.response && err.response.status === 401) {
           console.log("Here");
