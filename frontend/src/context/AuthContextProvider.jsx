@@ -20,6 +20,7 @@ export const AuthContextProvider = ({ children }) => {
         setUserInfo(response.data);
       } catch (err) {
         if (err.response && err.response.status === 401) {
+          console.log("Here");
           setUserInfo(null);
           navigate("/login");
         } else {

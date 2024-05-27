@@ -5,7 +5,7 @@ import { hashPassword, comparePassword } from "../utils/index.js";
 import { User } from "../database/associations.js";
 import LoginResponseDTO from "../dtos/LoginResponseDTO.js";
 
-const lifetime = "3600000";
+const lifetime = process.env.JWT_LIFETIME || "3600000";
 
 export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;

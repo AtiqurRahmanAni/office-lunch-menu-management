@@ -7,6 +7,7 @@ import AddMenu from "./pages/AddMenu";
 import ViewChoices from "./pages/ViewChoices";
 import SignUp from "./pages/SignUp";
 import ChooseItems from "./pages/ChooseItems";
+import NotFound from "./pages/NotFound";
 
 const App = () => {
   return (
@@ -18,11 +19,11 @@ const App = () => {
           <Route path="/add-menu" element={<AddMenu />} />
           <Route path="/view-choices" element={<ViewChoices />} />
         </Route>
-
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

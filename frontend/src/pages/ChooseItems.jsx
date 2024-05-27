@@ -49,7 +49,7 @@ const ChooseItems = () => {
   return (
     <div className="pt-16 container">
       <div className="my-4">
-        <h1 className="text-center font-semibold text-2xl">Today's Item</h1>
+        <h1 className="text-center font-semibold text-2xl">Today's Items</h1>
       </div>
       {isLoading && (
         <div className="flex justify-center items-center">
