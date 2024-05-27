@@ -36,7 +36,7 @@ export const whoAmI = asyncHandler(async (req, res) => {
   const { token } = req.cookies;
   const user = jwt.verify(token, process.env.JWT_SECRET);
   const userData = await User.findByPk(user.id, {
-    attributes: { exclude: ["password"] },
+    attributes: { exclude: ["password", "createdAt", "updatedAt"] },
   });
 
   if (!userData) {
