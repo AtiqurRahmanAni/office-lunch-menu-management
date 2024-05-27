@@ -1,5 +1,10 @@
 # office-lunch-menu-management
-A simple lunch management webapp where users can select available lunch options for the current day.
+A simple lunch management webapp where users can select available lunch options for the current day, built with Node.js and Express.js for the backend, and React.js for the frontend.
+
+## Features
+- Admin can add lunch options
+- Admin can view which employees choose which items
+- Employees can choose their lunch options
 
 ## Project requirements
 Node version **20** or higher is required to run this project. The project might work on a lower version as well.
@@ -30,3 +35,7 @@ Then, enter the necessary information.
 <div>
   <img width="500px" height"400px" src="https://github.com/AtiqurRahmanAni/office-lunch-menu-management/assets/56642339/fe93619a-d38f-4be0-8603-61d2b65fc582" alt="Database Schema">
 </div>
+
+## Areas of improvements
+- Only JWT token authentication is used, which is not very secure. A more secure `access` and `refresh` token-based authentication system can be considered if security is a concern.
+- Email verification or OTP system can be integrated upon sign-up to ensure real email addresses.
