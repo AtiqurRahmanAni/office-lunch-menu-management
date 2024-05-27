@@ -15,3 +15,18 @@ First, go to the `frontend` folder. Then similar to the backend, you need to ope
 ## How to run frontend and backend inside docker container
 If you do not want to take on those hustles, you can use Docker to run this application. You need to set environment variables inside the `frontend` and `backend` folders. Now the name of the `.env` variable inside the `backend` folder will be `.env.docker`. If you use Windows OS and PostgreSQL is on your Windows machine, set the variable `DB_HOST` to `host.docker.internal`. Otherwise, the database will fail to establish a connection with the backend Docker container. The rest of the variables are the same as before. Now come to the root directory where the `docker-compose.yml` file is located. Just run `docker compose up -d --build` and you are good to go. To remove containers run `docker compose down`.
 **If you set the PORT of the backend other than 3000, go to the `docker-compose.yml` and change line no. 11 to `<your-selected-port>:<your-selected-port>`**.
+
+## Api documentation:
+Upload the [json file](https://drive.google.com/file/d/1uiNmPZrtw3k8o08IVfGPG3YePVG7AKUL/view?usp=sharing) to Postman. 
+
+## How to create an admin user:
+Run the backend first. Then go to postman and go here:
+<div>
+  <img width="200px" height"250px" src="https://github.com/AtiqurRahmanAni/office-lunch-menu-management/assets/56642339/f9c8dd41-86d5-4a73-a12d-c66ff7298cd8" alt="Postman Screenshot">
+</div>
+Then, enter the necessary information.
+
+## Databse Schema:
+<div>
+  <img width="500px" height"400px" src="https://github.com/AtiqurRahmanAni/office-lunch-menu-management/assets/56642339/fe93619a-d38f-4be0-8603-61d2b65fc582" alt="Database Schema">
+</div>
