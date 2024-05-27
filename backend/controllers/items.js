@@ -2,7 +2,7 @@ import asyncHandler from "../utils/asyncHandler.js";
 import sequelize from "../database/dbConnect.js";
 import { ChoseItem, Item, ItemDate, User } from "../database/associations.js";
 import jwt from "jsonwebtoken";
-import { InternalServerError } from "../utils/errors.js";
+import { ForbiddenError, InternalServerError } from "../utils/errors.js";
 import { Op } from "sequelize";
 import { getToday } from "../utils/index.js";
 
@@ -65,6 +65,16 @@ export const getTodaysOptions = asyncHandler(async (req, res) => {
 });
 
 export const getLunchOptionsSelections = asyncHandler(async (req, res) => {
+  const { token } = req.cookies;
+  const user = jwt.verify(token, process.env.JWT_SECRET);
+
+  const userRole = await User.findByPk(user.id, { attributes: ["role"] });
+  if (userRole.role !== "admin") {
+    throw new ForbiddenError(
+      "You do not have permission to perform this action"
+    );
+  }
+
   try {
     const today = getToday();
     const users = await User.findAll({
@@ -104,7 +114,12 @@ export const createItem = asyncHandler(async (req, res) => {
   const { token } = req.cookies;
   const user = jwt.verify(token, process.env.JWT_SECRET);
 
-  console.log(description);
+  const userRole = await User.findByPk(user.id, { attributes: ["role"] });
+  if (userRole.role !== "admin") {
+    throw new ForbiddenError(
+      "You do not have permission to perform this action"
+    );
+  }
 
   try {
     const result = await sequelize.transaction(async (t) => {
