@@ -36,6 +36,6 @@ Then, enter the necessary information.
   <img width="500px" height"400px" src="https://github.com/AtiqurRahmanAni/office-lunch-menu-management/assets/56642339/fe93619a-d38f-4be0-8603-61d2b65fc582" alt="Database Schema">
 </div>
 
-## Areas of improvements
+## Area of improvements
 - Only JWT token authentication is used, which is not very secure. A more secure `access` and `refresh` token-based authentication system can be considered if security is a concern.
 - Email verification or OTP system can be integrated upon sign-up to ensure real email addresses.
